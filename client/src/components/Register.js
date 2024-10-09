@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { register } from "../services/auth.js";
-import { useRegisterContext } from "../contexts/RegisterContext.js";
 import Alert from "./Alert.js";
 
 import {
@@ -27,13 +26,14 @@ const RegisterBox = styled(Box)(({ theme }) => ({
 }));
 
 const Register = ({ toggleForm }) => {
-  const {
-    registerData,
-    setRegisterData,
-    setRegisterSuccessMessageVisible,
-    registerFailMessage,
-    setRegisterFailMessage,
-  } = useRegisterContext();
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [registerSuccessMessageVisible, setRegisterSuccessMessageVisible] =
+    useState(false);
+  const [registerFailMessage, setRegisterFailMessage] = useState(null);
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);

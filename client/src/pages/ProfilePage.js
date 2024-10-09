@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLoginContext } from "../contexts/LoginContext";
 import { useUserContext } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
 
 import {
   Card,
@@ -15,11 +13,11 @@ import {
   TextField,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
-  const { loginPending, loggedIn } = useLoginContext();
-  const { user, setUser, error } = useUserContext();
   const navigate = useNavigate();
+  const { user, setUser } = useUserContext();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -31,7 +29,7 @@ const ProfilePage = () => {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    if (!loginPending && !loggedIn) {
+    if (!user) {
       navigate("/login");
     }
   });

@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/auth.js";
 import { useUserContext } from "../contexts/UserContext.js";
-import { useLoginContext } from "../contexts/LoginContext.js";
-import { useRegisterContext } from "../contexts/RegisterContext.js";
 import Alert from "./Alert.js";
 
 import {
@@ -33,17 +31,11 @@ const LoginBox = styled(Box)(({ theme }) => ({
 const Login = ({ toggleForm }) => {
   const { setToken } = useUserContext();
 
-  const {
-    loginData,
-    setLoginData,
-    setLoginPending,
-    setLoggedIn,
-    loginFailMessage,
-    setLoginFailMessage,
-  } = useLoginContext();
-
-  const { registerSuccessMessageVisible, setRegisterSuccessMessageVisible } =
-    useRegisterContext();
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [loginPending, setLoginPending] = useState(false);
+  const [loginFailMessage, setLoginFailMessage] = useState(null);
+  const [loginSuccessMessageVisible, setLoginSuccessMessageVisible] =
+    useState(false);
 
   const navigate = useNavigate();
 
@@ -62,7 +54,7 @@ const Login = ({ toggleForm }) => {
     if (reason === "clickaway") {
       return;
     }
-    setRegisterSuccessMessageVisible(false);
+    setLoginSuccessMessageVisible(false);
   };
 
   const handleSubmit = async (e) => {
@@ -74,7 +66,6 @@ const Login = ({ toggleForm }) => {
       const token = await response.data.token;
 
       if (responseStatus === 200) {
-        setLoggedIn(true);
         setToken(token);
         navigate("/");
       } else if (responseStatus === 403) {
@@ -102,7 +93,7 @@ const Login = ({ toggleForm }) => {
       <Box width="100%">
         <Typography variant="h5">
           <Snackbar
-            open={registerSuccessMessageVisible}
+            open={loginSuccessMessageVisible}
             autoHideDuration={12000}
             onClose={handleSnackbarClose}
           >

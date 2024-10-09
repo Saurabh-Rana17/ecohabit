@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Box, Button, Typography } from "@mui/material";
-import { useLoginContext } from "../contexts/LoginContext";
-import { useNavigate } from "react-router-dom";
 import UserHabitForm from "../components/UserHabitForm";
 import HabitCard from "../components/HabitCard";
 import Weekbar from "../components/WeekBar";
 import { useUserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
+  const navigate = useNavigate();
   // Habits from server
   const [habits, setHabits] = useState([]);
   // user data
@@ -17,8 +17,6 @@ const Homepage = () => {
   const [showHabitForm, setShowHabitForm] = useState(false);
   const [last7DaysAnswers, setLast7DaysAnswers] = useState([]);
   const [answersFetchTrigger, setAnswersFetchTrigger] = useState(false);
-  const { loginPending, loggedIn, setLoggedIn } = useLoginContext();
-  const navigate = useNavigate();
 
   // Store categories in an array
   // 5 Categories: (Recycle, Commute, Water, Energy, and Food)
@@ -30,10 +28,8 @@ const Homepage = () => {
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    if (!loginPending && !loggedIn && !token) {
+    if (!user) {
       navigate("/login");
-    } else {
-      setLoggedIn(true);
     }
   }, []);
 

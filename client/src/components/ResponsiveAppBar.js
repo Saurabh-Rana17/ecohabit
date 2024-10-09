@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useLoginContext } from "../contexts/LoginContext.js";
 import { Adb as AdbIcon, Menu as MenuIcon } from "@mui/icons-material";
+import { useUserContext } from "../contexts/UserContext.js";
+
 import {
   AppBar,
   Box,
@@ -27,15 +28,15 @@ function ResponsiveAppBar() {
     "Dashboard",
     "Login",
   ]);
-  const { loggedIn } = useLoginContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
-    if (loggedIn) {
+    if (user) {
       setSettings([...settings.slice(0, settings.length - 1), "Logout"]);
     } else {
       setSettings([...settings.slice(0, settings.length - 1), "Login"]);
     }
-  }, [loggedIn]);
+  }, [user]);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
